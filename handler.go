@@ -8,10 +8,17 @@ type ComputeHandler struct {
 }
 
 func (ch *ComputeHandler) Compute() error {
-	input := make([]byte, 1024)
-	for _, readErr := ch.r.Read(input); readErr != io.EOF; {
+	var input []byte
+	buffer := make([]byte, 1024)
+	for {
+		n, readErr := ch.r.Read(buffer)
+		input = append(input, buffer[:n]...)
 		if readErr != nil {
-			return readErr
+			if readErr == io.EOF {
+				break
+			} else {
+				return readErr
+			}
 		}
 	}
 	res, err := PostfixToPrefix(string(input))
