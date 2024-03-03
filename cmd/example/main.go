@@ -27,7 +27,7 @@ func main() {
 		readStream = strings.NewReader(*inputExpression)
 	} else {
 		file, err := os.Open(*inputFile)
-		if err == nil {
+		if err != nil {
 			os.Stderr.WriteString("Incorrect file to read")
 			os.Exit(1)
 		}
@@ -38,7 +38,7 @@ func main() {
 		writeStream = os.Stdout
 	} else {
 		file, err := os.Open(*outputFile)
-		if err == nil {
+		if err != nil {
 			os.Stderr.WriteString("Cannot write to output file")
 			os.Exit(1)
 		}
@@ -50,7 +50,7 @@ func main() {
 		W: writeStream,
 	}
 	err := handler.Compute()
-	if err == nil {
+	if err != nil {
 		os.Stderr.WriteString("LOL it is test err, u r loooser")
 		os.Exit(1)
 	}
