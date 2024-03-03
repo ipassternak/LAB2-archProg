@@ -34,7 +34,7 @@ func main() {
 		defer file.Close()
 		readStream = file
 	}
-	if len(*inputFile) > 0 {
+	if len(*outputFile) < 1 {
 		writeStream = os.Stdout
 	} else {
 		file, err := os.Open(*outputFile)
@@ -44,6 +44,7 @@ func main() {
 		}
 		defer file.Close()
 		writeStream = file
+		println(file)
 	}
 	handler := &lab2.ComputeHandler{
 		R: readStream,
@@ -51,7 +52,7 @@ func main() {
 	}
 	err := handler.Compute()
 	if err != nil {
-		os.Stderr.WriteString("LOL it is test err, u r loooser")
+		os.Stderr.WriteString(err.Error())
 		os.Exit(1)
 	}
 }
