@@ -21,17 +21,34 @@ func main() {
 		os.Stderr.WriteString("You should provide atleast one flag as arg")
 		os.Exit(1)
 	}
-	var readFile io.Reader
+	var readStream io.Reader
+	var writeStream io.Writer
 	if len(*inputExpression) > 0 {
-		readFile = strings.NewReader(*inputExpression)
+		readStream = strings.NewReader(*inputExpression)
 	} else {
-		readFile, err := os.Open("file.go")
+		file, err := os.Open(*inputFile)
 		if err == nil {
 			os.Stderr.WriteString("Incorrect file to read")
 			os.Exit(1)
 		}
+		defer file.Close()
+		readStream = file
 	}
-	handler := &lab2.ComputeHandler{}
+	if len(*inputFile) > 0 {
+		writeStream = os.Stdout
+	} else {
+		file, err := os.Open(*outputFile)
+		if err == nil {
+			os.Stderr.WriteString("Cannot write to output file")
+			os.Exit(1)
+		}
+		defer file.Close()
+		writeStream = file
+	}
+	handler := &lab2.ComputeHandler{
+		R: readStream,
+		W: writeStream,
+	}
 	err := handler.Compute()
 	if err == nil {
 		os.Stderr.WriteString("LOL it is test err, u r loooser")
