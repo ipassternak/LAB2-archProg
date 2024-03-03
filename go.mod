@@ -1,9 +1,8 @@
 // TODO: Переіменуйте на власний модуль.
-module github.com/roman-mazur/architecture-lab-2
+module github.com/ipassternak/LAB2-archProg
 
 go 1.22
 
-// TODO: Змініть, якщо вам потрібно використовувати іншу бібліотеку.
 require github.com/stretchr/testify v1.8.4
 
 require (
