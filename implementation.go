@@ -10,6 +10,10 @@ func isOperator(op string) bool {
 }
 
 func PostfixToPrefix(input string) (string, error) {
+	if input == "" {
+		return "", errors.New("invalid postfix expression: empty input")
+	}
+
 	tokens := strings.Fields(input)
 	stack := []string{}
 
