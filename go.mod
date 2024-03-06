@@ -1,4 +1,3 @@
-// TODO: Переіменуйте на власний модуль.
 module github.com/ipassternak/LAB2-archProg
 
 go 1.22

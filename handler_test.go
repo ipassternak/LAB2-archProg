@@ -1,13 +1,14 @@
 package lab2
 
 import (
-	"fmt"
+	"os"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPostfixToPrefix(t *testing.T) {
+func TestCompute(t *testing.T) {
 	testCases := []struct {
 		name     string
 		input    string
@@ -21,24 +22,6 @@ func TestPostfixToPrefix(t *testing.T) {
 			errMsg:   "",
 		},
 		{
-			name:     "Complex expression",
-			input:    "2 3 4 * + 5 / 6 ^",
-			expected: "^ / + 2 * 3 4 5 6",
-			errMsg:   "",
-		},
-		{
-			name:     "Invalid expression: insufficient operands",
-			input:    "4 2 - * 5 +",
-			expected: "",
-			errMsg:   "invalid postfix expression: insufficient operands",
-		},
-		{
-			name:     "Invalid expression: too many operands",
-			input:    "4 2 - 3 * 5 + 6",
-			expected: "",
-			errMsg:   "invalid postfix expression: too many operands",
-		},
-		{
 			name:     "Invalid expression: empty input",
 			input:    "",
 			expected: "",
@@ -47,8 +30,14 @@ func TestPostfixToPrefix(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
+		b := strings.Builder{}
+		h := &ComputeHandler{
+			R: strings.NewReader(tc.input),
+			W: &b,
+		}
 		t.Run(tc.name, func(t *testing.T) {
-			result, err := PostfixToPrefix(tc.input)
+			err := h.Compute()
+			result := b.String()
 			if tc.errMsg != "" {
 				assert.Error(t, err)
 				assert.Equal(t, tc.errMsg, err.Error())
@@ -61,14 +50,13 @@ func TestPostfixToPrefix(t *testing.T) {
 	}
 }
 
-func ExamplePostfixToPrefix() {
-	res, err := PostfixToPrefix("4 2 - 3 * 5 +")
-	if err != nil {
-		fmt.Printf("error: %s", err.Error())
-		return
+func ExampleComputeHandler_Compute() {
+	h := &ComputeHandler{
+		R: strings.NewReader("4 2 - 3 * 5 +"),
+		W: os.Stdout,
 	}
-	fmt.Println(res)
 
+	h.Compute()
 	// Output:
 	// + * - 4 2 3 5
 }
