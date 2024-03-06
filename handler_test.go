@@ -16,13 +16,13 @@ func TestCompute(t *testing.T) {
 		errMsg   string
 	}{
 		{
-			name:     "Simple expression",
+			name:     "The output should match the input expression",
 			input:    "4 2 - 3 * 5 +",
 			expected: "+ * - 4 2 3 5",
 			errMsg:   "",
 		},
 		{
-			name:     "Invalid expression: empty input",
+			name:     "Returns an error for the invalid expression",
 			input:    "",
 			expected: "",
 			errMsg:   "invalid postfix expression: empty input",
