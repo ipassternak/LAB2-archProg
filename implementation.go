@@ -21,7 +21,7 @@ func PostfixToPrefix(input string) (string, error) {
 		if !isOperator(token) {
 			stack = append(stack, token)
 		} else {
-			if len(stack) < 2 {
+			if len(stack) <= 2 {
 				return "", errors.New("invalid postfix expression: insufficient operands")
 			}
 			operand2 := stack[len(stack)-1]
